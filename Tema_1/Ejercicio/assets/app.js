@@ -136,7 +136,7 @@ try {
             alert("Credenciales incorrectas");
         }
 
-    }*/
+    }
 //Ejercicio 7
 
     let numeroRandom=Math.floor( Math.random()*10)+1;
@@ -169,5 +169,5 @@ try {
     alert("Haz uso solo de numeros")
 
 }
-
+*/
 
