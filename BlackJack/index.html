@@ -1,13 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="./assets/style.css">
 </head>
+
 <body>
-    <div id="carta"></div>
-    <script src="assets/app.js"></script>
+    <header>
+        <h1>Bienvenidos al blackjack Jose</h1>
+    </header>
+    <div class="modal">
+        <div class="menuInicio">
+            <h2>Bienvenidos</h2>
+            <form action="" method="post" id="inicioSesion">
+                <p>Introduzca Nombre Usuario:</p>
+                <input type="text" name="" id="nombreUsuario">
+                <p>Introduzca contraseña:</p>
+                <input type="text" name="" id="contrasenyaUsuario">
+                <input type="submit" value="Iniciar" id="iniciar">
+                <span>Crear Cuenta</span>
+            </form>
+            <p id="invitado">Jugar como Invitado</p>
+        </div>
+        <div class="menuJugadores">
+            <h1>¿Cuantos jugadores van a ser?</h1>
+            <input type="number" min="1" value="1" max="4" id="nJugadores">
+            <button id="iniciarJuego">Iniciar juego</button>
+
+
+        </div>
+
+    </div>
+    <section>
+        <div id="cupier">
+            <h1>Cupier</h1>
+        </div>
+    </section>
+    <section class="mesaJ">
+
+        <div id="j1" class="jugadores">
+            <h1>Jugador 1<span id="din1"> 300</span></h1>
+            <div>
+            <button class="button">Pedir Carta</button>
+            <button class="button">Pasar</button>
+            <button class="button">All in</button>
+            </div>
+
+
+        </div>
+
+        <div id="j2" class="jugadores">
+            <h1>Jugador 2 <span id="din2">300</span></h1>
+            <div>
+                <button class="button">Pedir Carta</button>
+                <button class="button">Pasar</button>
+                <button class="button">All in</button>    
+            </div>
+        </div>
+
+
+
+        <div id="j3" class="jugadores">
+            
+            <h1>Jugador 3 <span id="din3">300</span></h1>
+            <div>
+            <button class="button">Pedir Carta</button>
+            <button class="button">Pasar</button>
+            <button class="button">All in</button>
+            </div>
+
+        </div>
+
+        <div id="j4" class="jugadores">
+            <h1>Jugador 4 dinero <span id="din4">300</span> </h1>
+            <div>
+            <button class="button">Pedir Carta</button>
+            <button class="button">Pasar</button>
+            <button class="button">All in</button>
+        </div>
+        </div>
+
+    </section>
+
+    <script src="./assets/app.js"></script>
+
 </body>
+
 </html>
