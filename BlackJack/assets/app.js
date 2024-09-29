@@ -19,7 +19,6 @@
         this.carta.push(numAleatorio.concat(paloAleatorio));
         //Almaceno la suma 
         this.suma=this.sumaCartas();
-        this.suma<=21 ? console.log(this.carta,this.suma): console.log("te pasaste");
     }
     //Este método se encarga de hacer la suma de las cartas 
     sumaCartas() {
@@ -117,11 +116,24 @@ const obtnJugadores=document.getElementById("nJugadores");
 const iniciarJuego=document.getElementById("iniciarJuego");
 
 
-const cupierZona=document.getElementById("cupier"); console.log(cupierZona);
+const cupierZona=document.getElementById("cupier");
 const jugador1Zona=document.getElementById("j1");
 const jugador2Zona=document.getElementById("j2");
 const jugador3Zona=document.getElementById("j3");
-const jugador4Zona=document.getElementById("j4");
+const jugador4Zona=document.getElementById("j4")
+
+const jugador1Din=document.getElementById("din1");
+const jugador2Din=document.getElementById("din2");
+const jugador3Din=document.getElementById("din3");
+const jugador4Din=document.getElementById("din4");
+
+const jugador1Sum=document.getElementById("sum1");
+const jugador2Sum=document.getElementById("sum2");
+const jugador3Sum=document.getElementById("sum3");
+const jugador4Sum=document.getElementById("sum4");
+const cupierSum=document.getElementById("sumCupier");
+
+
 
 
 const cupier = new Cupier(1500,[],[],0);
@@ -141,6 +153,8 @@ const cartasjugador4= new Cartas([],jugador4.carta,jugador4Zona);
 
 const jugadores=[jugador1,jugador2,jugador3,jugador4];
 const cartas=[cartasjugador1,cartasjugador2,cartasjugador3,cartasjugador4];
+const jugadoresDin=[jugador1Din,jugador2Din,jugador3Din,jugador4Din];
+const jugadoresSum=[jugador1Sum,jugador2Sum,jugador3Sum,jugador4Sum]
 
 
 let nJugadores;
@@ -157,10 +171,19 @@ iniciarJuego.addEventListener("click",()=>{
     cupier.juegaCartas();
     cupier.juegaCartas();
     cartasCupier.muestraCartas();
+    cupierSum.innerHTML=cupier.suma;
+
     for (let index = 0; index < nJugadores; index++) {
         jugadores[index].juegaCartas();
         jugadores[index].juegaCartas();
+        jugadoresDin[index].innerHTML=jugadores[index].dinero;
+        jugadoresSum[index].innerHTML=jugadores[index].suma;
+
         cartas[index].muestraCartas();
+
+        if (jugadores[index].suma>21) {
+            alert(jugadores[index]+" Has perdido");
+        }
     }
 })
 
