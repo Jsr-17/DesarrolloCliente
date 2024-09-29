@@ -51,6 +51,7 @@ class Juego {
         let total=valorNumerico.reduce((suma,valor)=>valor!="A" ? suma+=valor: suma+11<=21 ? suma+11 : suma+1);
 
         //Devuelvo el valor de la suma
+        console.log(valorNumerico);
         return total
     }
 }
@@ -85,10 +86,17 @@ class Cartas {
     //Método encargado de obtener el valor de las cartas que van saliendo para poder mostrarlas luego por pantalla
 
     muestraCartas(){
-        let urlCartas=this.cartas.map((value)=>value="img/"+value+".jpg"    )
+        const carta=document.querySelector("#carta");
+        let urlCartas=this.cartas.map((value)=>value="./assets/img/"+value+".png");
 
-        this.url.push(urlCartas);
-        console.log(this.url)
+        this.url.push(...urlCartas);
+
+        for (let index = 0; index < this.url.length; index++) {
+            const img = document.createElement("img");
+            img.src=this.url[index];
+            console.log(img)
+            carta.parentNode.insertBefore(img, carta);            
+        }
     }
 
 }
