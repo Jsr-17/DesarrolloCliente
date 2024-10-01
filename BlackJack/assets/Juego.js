@@ -79,7 +79,7 @@ export class Cupier extends Juego {
     }
 }
 //Clase de las Cartas
-export class Cartas {
+class Cartas {
     constructor( url,cartas,jug) {
         this.url = url;
         this.cartas=cartas;

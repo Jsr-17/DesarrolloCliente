@@ -1,4 +1,3 @@
-/*
 //Constructor principal de la clase donde la logica del juego va a ser diseñada
  class Juego {
     constructor(carta,suma) {
@@ -105,9 +104,8 @@
 }
 
 
-*/
 
-import { Cupier,Cartas,Usuario } from "./Juego.js";
+
 
 const modal=document.querySelector(".modal");
 const invitado=document.getElementById("invitado");
