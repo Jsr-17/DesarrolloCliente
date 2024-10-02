@@ -140,6 +140,31 @@ class Cartas {
     }
 
 }
+const cojeCartaDom=(jugador,cartasJugador,sumaJugador,zonaJugador,e)=>{    
+    jugador.juegaCartas(baraja.sacaCarta());
+    zonaJugador=e.target;
+
+    cartasJugador.muestraCarta();
+    sumaJugador.innerHTML=0;
+    if (jugador.pierde) {
+        zonaJugador.style.display = "none";
+
+        while (zonaJugador.firstChild) {
+            zonaJugador.removeChild(zonaJugador.firstChild);
+        }
+
+        cartasJugador.muestraCartas();
+
+        let div = document.createElement("div");
+        div.innerHTML = "Has Perdido ";
+        div.innerHTML += "<br>";
+        div.innerHTML += " Tu total suma:  " + jugador.suma
+        zonaJugador.appendChild(div);
+
+
+    }
+    sumaJugador.innerHTML = jugador.suma;
+}
 
 //Eventos generales 
 const modal = document.querySelector(".modal");
@@ -223,6 +248,7 @@ iniciarJuego.addEventListener("click", () => {
     cupier.juegaCartas(baraja.sacaCarta());
     cupier.juegaCartas(baraja.sacaCarta());
     cartasCupier.muestraCartas();
+    
     cupierSum.innerHTML = cupier.suma;
 
     for (let index = 0; index < nJugadores; index++) {
@@ -239,30 +265,7 @@ iniciarJuego.addEventListener("click", () => {
     }
 })
 
-j1PideCarta.addEventListener("click", () => {
-    jugador1.juegaCartas(baraja.sacaCarta());
-    cartasjugador1.muestraCarta();
-
-    jugador1Sum.innerHTML = 0;
-    if (jugador1.pierde) {
-        j1PideCarta.style.display = "none";
-
-        while (jugador1Zona.firstChild) {
-            jugador1Zona.removeChild(jugador1Zona.firstChild);
-        }
-
-        let div = document.createElement("div");
-
-        div.innerHTML = "Has Perdido ";
-        div.innerHTML += "<br>";
-        div.innerHTML += " Tu total suma:  " + jugador1.suma
-        jugador1Zona.appendChild(div);
-
-
-    }
-    jugador1Sum.innerHTML = jugador1.suma;
-
-})
+j1PideCarta.addEventListener("click", (e)=>cojeCartaDom(jugador1,cartasjugador1,jugador1Sum,jugador1Zona,e))
 
 j2PideCarta.addEventListener("click", () => {
     jugador2.juegaCartas(baraja.sacaCarta());
@@ -275,6 +278,7 @@ j2PideCarta.addEventListener("click", () => {
         while (jugador2Zona.firstChild) {
             jugador2Zona.removeChild(jugador2Zona.firstChild);
         }
+        cartasjugador2.muestraCartas();
 
         let div = document.createElement("div");
         div.innerHTML = "Has Perdido ";
@@ -299,6 +303,7 @@ j3PideCarta.addEventListener("click", () => {
         while (jugador3Zona.firstChild) {
             jugador3Zona.removeChild(jugador3Zona.firstChild);
         }
+        cartasjugador3.muestraCartas();
 
         let div = document.createElement("div");
         div.innerHTML = "Has Perdido ";
@@ -324,6 +329,8 @@ j4PideCarta.addEventListener("click", () => {
             jugador4Zona.removeChild(jugador4Zona.firstChild);
         }
 
+        cartasjugador4.muestraCartas();
+
         let div = document.createElement("div");
         div.innerHTML = "Has Perdido ";
         div.innerHTML += "<br>";
@@ -335,4 +342,3 @@ j4PideCarta.addEventListener("click", () => {
     jugador4Sum.innerHTML = jugador4.suma;
 
 })
-console.log(baraja);

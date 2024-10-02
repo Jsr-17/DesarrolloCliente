@@ -26,4 +26,24 @@ const crearBaraja=()=>{
     return baraja;
 }
 
+//Pedir una carta y retirarla de la baraja
+const pedirCarta=()=>{
+    const carta=baraja.pop();
+    if (baraja.length ===0) {
+        throw "No hay cartas";
+    }
+
+    return carta;
+}
+
+
+//Calculamos el valor de la carta
+const valorCarta=(carta)=>{
+    let puntos =carta.substring(0,carta.length-1);
+    isNaN(puntos)? puntos=='A' ?  11 : 10 : puntos *= 1;
+    
+    return puntos;
+}
+
 crearBaraja();
+valorCarta(pedirCarta());
