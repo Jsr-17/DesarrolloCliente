@@ -1,3 +1,8 @@
+
+//-------------------------------------------------Clase Baraja-----------------------------------------------
+
+
+//Clase encargada de la lógica del mazo de cartas
 class Baraja {
     constructor() {
         this.mazo = [];
@@ -23,14 +28,22 @@ class Baraja {
             }
         }
     }
-    sacaCarta(){
-        let numeroAleatorio=Math.round(Math.random()*this.mazo.length);
-        let cartaAleatoria=this.mazo[numeroAleatorio];
-        let posicion=this.mazo.indexOf(cartaAleatoria);
-        this.mazo.splice(posicion,1);
+    //Lógica encargada de sacar la carta y eliminarla del mazo para que sea eliminada del juego
+
+    sacaCarta() {
+        let numeroAleatorio = Math.floor(Math.random() * this.mazo.length);
+        let cartaAleatoria = this.mazo[numeroAleatorio];
+        let posicion = this.mazo.indexOf(cartaAleatoria);
+
+        this.mazo.splice(posicion, 1);
         return cartaAleatoria
     }
 }
+
+
+//---------------------------------------------------------------Clase Juego-----------------------------------------------------------------------------
+
+
 
 //Constructor principal de la clase donde la logica del juego va a ser diseñada
 class Juego {
@@ -86,26 +99,58 @@ class Juego {
         return total
     }
 }
+
+
+//------------------------------------------------------Clase hija Usuario------------------------------------------------------------------
+
+
+
 //Clase del o los usuarios que jugaran
 
 class Usuario extends Juego {
 
-    constructor(dinero, usuario, pass, carta, suma, pierde) {
+    constructor(dinero, usuario, pass, carta, suma, pierde, pasar) {
         super(carta, suma, pierde)
         this.dinero = dinero;
         this.usuario = usuario;
         this.pass = pass;
+        this.pasar = pasar;
 
     }
 }
+
+//---------------------------------------------------------Clase hija Cupier----------------------------------------------------------------
+
+
 //Clase del Cupier el cual sera la banca 
 class Cupier extends Juego {
     constructor(dinero, carta, personas, suma) {
         super(carta, suma);
         this.dinero = dinero;
         this.personas = personas;
+        this.turno=true
+    }
+    empiezaTurno(){
+        this.turno=true
+        for (let index = 0; index < this.personas.length; index++) {
+            if (!this.personas[index].pierde && !this.personas[index].pasar) {
+                return this.turno=false;
+            }
+            
+        }
+        if (this.turno) {
+            console.log("hola");
+        }
     }
 }
+
+
+
+
+//-------------------------------------------------------------Clase Carta-------------------------------------------------------------------
+
+
+
 //Clase de las Cartas
 class Cartas {
     constructor(url, cartas, jug) {
@@ -114,7 +159,7 @@ class Cartas {
         this.jug = jug;
     }
 
-    //Método encargado de obtener el valor de las cartas que van saliendo para poder mostrarlas luego por pantalla
+    //Métodos encargados de obtener el valor de las cartas que van saliendo para poder mostrarlas luego por pantalla
 
     muestraCartas() {
         const carta = document.getElementById(this.jug.id);
@@ -127,6 +172,7 @@ class Cartas {
             carta.appendChild(img);
         }
     }
+
     muestraCarta() {
         const carta = document.getElementById(this.jug.id);
         let ultima = this.cartas.length
@@ -140,31 +186,64 @@ class Cartas {
     }
 
 }
-const cojeCartaDom=(jugador,cartasJugador,sumaJugador,zonaJugador,e)=>{    
+
+
+
+
+
+
+//-------------------------------------------------------------Funciones---------------------------------------------------------------------------------- 
+
+//Método encargado de la modificación de la carga en pantalla de las cartas y de muestra de información en pantalla
+
+//Los parámetros son las partes del objeto importantes del funcionamiento de esta lógica
+const cojeCartaDom = (jugador, cartasJugador, sumaJugador, zonaJugador, e,cupier) => {
+    if (jugador.pasar) {
+        return;
+    }
     jugador.juegaCartas(baraja.sacaCarta());
-    zonaJugador=e.target;
+    zonaJugador = e.target;
 
     cartasJugador.muestraCarta();
-    sumaJugador.innerHTML=0;
+    sumaJugador.innerHTML = 0;
+
+    //Cuando el jugador se pasa debemos de avisar por pantalla
     if (jugador.pierde) {
         zonaJugador.style.display = "none";
-
-        while (zonaJugador.firstChild) {
-            zonaJugador.removeChild(zonaJugador.firstChild);
-        }
-
-        cartasJugador.muestraCartas();
-
-        let div = document.createElement("div");
-        div.innerHTML = "Has Perdido ";
-        div.innerHTML += "<br>";
-        div.innerHTML += " Tu total suma:  " + jugador.suma
-        zonaJugador.appendChild(div);
-
-
+        sumaJugador.style.fontSize = "20px";
+        sumaJugador.innerHTML = "Te has pasado tu total es de: " + jugador.suma;
+        cupier.empiezaTurno();
+        return;
     }
+    //En caso contrario Seguimos con el juego
     sumaJugador.innerHTML = jugador.suma;
+    cupier.empiezaTurno();
 }
+
+
+
+
+const plantarse = (jugador,elemento,cupier) => {
+       if (!jugador.pasar && !jugador.pierde ) {
+        jugador.pasar=true;
+
+        let div = document.createElement('div');
+        div.innerText="SE HA PLANTADO";
+        div.style.marginLeft="3px";
+        div.style.padding="3px";
+        div.style.border="solid 3px black";
+        div.style.backgroundColor="white"
+        div.style.textAlign="center";
+        
+        elemento.parentElement.appendChild(div);    
+       } 
+       cupier.empiezaTurno();
+}
+
+//------------------------------------------------------------Eventos y manejo del DOM-----------------------------------------------------------
+
+
+
 
 //Eventos generales 
 const modal = document.querySelector(".modal");
@@ -200,39 +279,81 @@ const j2PideCarta = document.getElementById("pCarta2");
 const j3PideCarta = document.getElementById("pCarta3");
 const j4PideCarta = document.getElementById("pCarta4");
 
-const baraja=new Baraja();
+//Pasar Turno o Plantarse
+const j1Pasar = document.getElementById("pasar1");
+const j2Pasar = document.getElementById("pasar2");
+const j3Pasar = document.getElementById("pasar3");
+const j4Pasar = document.getElementById("pasar4");
 
-//Propiedades del cupier
-const cupier = new Cupier(1500, [], [], 0);
-const cartasCupier = new Cartas([], cupier.carta, cupierZona);
+
+//---------------------------------------------------------------------Objetos Juego---------------------------------------------------------------------------
+
+
+//Objeto de baraja
+const baraja = new Baraja();
 
 //Propiedades del 1 jugador
-const jugador1 = new Usuario(300, "Invitado1", "", [], 0, false);
+const jugador1 = new Usuario(300, "Invitado1", "", [], 0, false, false);
 const cartasjugador1 = new Cartas([], jugador1.carta, jugador1Zona);
 
 //Propiedades del jugador 2
-const jugador2 = new Usuario(300, "Invitado2", "", [], 0, false);
+const jugador2 = new Usuario(300, "Invitado2", "", [], 0, false, false);
 const cartasjugador2 = new Cartas([], jugador2.carta, jugador2Zona);
 
 //Propiedades del jugador 2
-const jugador3 = new Usuario(300, "Invitado3", "", [], 0, false);
+const jugador3 = new Usuario(300, "Invitado3", "", [], 0, false, false);
 const cartasjugador3 = new Cartas([], jugador3.carta, jugador3Zona);
 
 //Propiedades del jugador 2
-const jugador4 = new Usuario(300, "Invitado4", "", [], 0, false);
+const jugador4 = new Usuario(300, "Invitado4", "", [], 0, false, false);
 const cartasjugador4 = new Cartas([], jugador4.carta, jugador4Zona);
+
+
+
+//------------------------------------------------------------------------Arrays--------------------------------------------
+
 
 
 //Propiedades agrupadas
 const jugadores = [jugador1, jugador2, jugador3, jugador4];
 const cartas = [cartasjugador1, cartasjugador2, cartasjugador3, cartasjugador4];
 const jugadoresDin = [jugador1Din, jugador2Din, jugador3Din, jugador4Din];
-const jugadoresSum = [jugador1Sum, jugador2Sum, jugador3Sum, jugador4Sum]
+const jugadoresSum = [jugador1Sum, jugador2Sum, jugador3Sum, jugador4Sum];
 
-//variables necesarias
+
+
+
+//---------------------------------------------------------------------Objetos Cupier---------------------------------------------------------------------------
+
+
+//Propiedades del cupier
+const cupier = new Cupier(1500, [], jugadores, 0);
+const cartasCupier = new Cartas([], cupier.carta, cupierZona);
+
+
+//------------------------------------Variables------------------------------------------
+
 let nJugadores;
 
+
+
+
+
+
+
+
+//Inicia un mazo
 baraja.creaMazo();
+
+
+
+
+
+
+
+
+//-------------------------------------------------------------------Eventos---------------------------------------------------------------
+
 
 //Esconde el menú de inicio y muestra el de nº Jugadores
 invitado.addEventListener("click", () => {
@@ -240,105 +361,62 @@ invitado.addEventListener("click", () => {
     menuJugadores.style.display = "flex";
 });
 
+
+
 //Esconde el menú  de nº Jugadores y muestra la partida con el tablero lleno;
 iniciarJuego.addEventListener("click", () => {
+
     menuJugadores.style.display = "none";
     modal.style.display = "none";
+
     nJugadores = obtnJugadores.value;
-    cupier.juegaCartas(baraja.sacaCarta());
+
     cupier.juegaCartas(baraja.sacaCarta());
     cartasCupier.muestraCartas();
-    
+
+
+    let img = document.createElement('img');
+    img.src = "./assets/img/reverso-gris.png";
+    cupierZona.appendChild(img);
     cupierSum.innerHTML = cupier.suma;
 
+    //Itera por cada jugador y comprueba segun el índice si es un jugador activo o no 
+    jugadores.forEach((jugador, index) => {
+        jugador.pasar = (index + 1) > nJugadores ? true : false;
+    });
+
+    //Inicializa los datos de los jugadores activos 
+
     for (let index = 0; index < nJugadores; index++) {
+
         jugadores[index].juegaCartas(baraja.sacaCarta());
         jugadores[index].juegaCartas(baraja.sacaCarta());
+
         jugadoresDin[index].innerHTML = jugadores[index].dinero;
         jugadoresSum[index].innerHTML = jugadores[index].suma;
 
         cartas[index].muestraCartas();
 
-        if (jugadores[index].suma > 21) {
-            alert(jugadores[index] + " Has perdido");
-        }
     }
-})
-
-j1PideCarta.addEventListener("click", (e)=>cojeCartaDom(jugador1,cartasjugador1,jugador1Sum,jugador1Zona,e))
-
-j2PideCarta.addEventListener("click", () => {
-    jugador2.juegaCartas(baraja.sacaCarta());
-    cartasjugador2.muestraCarta();
-
-    jugador2Sum.innerHTML = 0;
-    if (jugador2.pierde) {
-        j2PideCarta.style.display = "none";
-
-        while (jugador2Zona.firstChild) {
-            jugador2Zona.removeChild(jugador2Zona.firstChild);
-        }
-        cartasjugador2.muestraCartas();
-
-        let div = document.createElement("div");
-        div.innerHTML = "Has Perdido ";
-        div.innerHTML += "<br>";
-        div.innerHTML += " Tu total suma:  " + jugador2.suma
-        jugador2Zona.appendChild(div);
+});
 
 
-    }
-    jugador2Sum.innerHTML = jugador2.suma;
-
-})
-
-j3PideCarta.addEventListener("click", () => {
-    jugador3.juegaCartas(baraja.sacaCarta());
-    cartasjugador3.muestraCarta();
-
-    jugador3Sum.innerHTML = 0;
-    if (jugador3.pierde) {
-        j3PideCarta.style.display = "none";
-
-        while (jugador3Zona.firstChild) {
-            jugador3Zona.removeChild(jugador3Zona.firstChild);
-        }
-        cartasjugador3.muestraCartas();
-
-        let div = document.createElement("div");
-        div.innerHTML = "Has Perdido ";
-        div.innerHTML += "<br>";
-        div.innerHTML += " Tu total suma:  " + jugador3.suma;
-        jugador3Zona.appendChild(div);
 
 
-    }
-    jugador3Sum.innerHTML = jugador3.suma;
+//Eventos generales de la pedida de las  cartas 
+j1PideCarta.addEventListener("click", (e) => cojeCartaDom(jugador1, cartasjugador1, jugador1Sum, jugador1Zona, e,cupier));
 
-})
+j2PideCarta.addEventListener("click", (e) => cojeCartaDom(jugador2, cartasjugador2, jugador2Sum, jugador2Zona, e,cupier));
 
-j4PideCarta.addEventListener("click", () => {
-    jugador4.juegaCartas(baraja.sacaCarta());
-    cartasjugador4.muestraCarta();
+j3PideCarta.addEventListener("click", (e) => cojeCartaDom(jugador3, cartasjugador3, jugador3Sum, jugador3Zona, e,cupier));
 
-    jugador4Sum.innerHTML = 0;
-    if (jugador4.pierde) {
-        j4PideCarta.style.display = "none";
-
-        while (jugador4Zona.firstChild) {
-            jugador4Zona.removeChild(jugador4Zona.firstChild);
-        }
-
-        cartasjugador4.muestraCartas();
-
-        let div = document.createElement("div");
-        div.innerHTML = "Has Perdido ";
-        div.innerHTML += "<br>";
-        div.innerHTML += " Tu total suma:  " + jugador4.suma
-        jugador4Zona.appendChild(div);
+j4PideCarta.addEventListener("click", (e) => cojeCartaDom(jugador4, cartasjugador4, jugador4Sum, jugador4Zona, e,cupier));
 
 
-    }
-    jugador4Sum.innerHTML = jugador4.suma;
 
-})
+//Evento de plantarse y no pedir más cartas
+
+j1Pasar.addEventListener("click", ()=>plantarse(jugador1,j1Pasar,cupier));
+j2Pasar.addEventListener("click", ()=>plantarse(jugador2,j2Pasar,cupier));
+j3Pasar.addEventListener("click", ()=>plantarse(jugador3,j3Pasar,cupier));
+j4Pasar.addEventListener("click", ()=>plantarse(jugador4,j4Pasar,cupier));
