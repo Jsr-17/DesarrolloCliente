@@ -109,12 +109,14 @@ class Juego {
 
 class Usuario extends Juego {
 
-    constructor(dinero, usuario, pass, carta, suma, pierde, pasar) {
+    constructor(dinero, usuario, pass, carta, suma, pierde, pasar,activo) {
         super(carta, suma, pierde)
         this.dinero = dinero;
         this.usuario = usuario;
         this.pass = pass;
         this.pasar = pasar;
+        this.activo = activo;
+
 
     }
 }
@@ -130,7 +132,7 @@ class Cupier extends Juego {
         this.personas = personas;
         this.turno=true
     }
-    empiezaTurno(){
+    empiezaTurno(baraja){
         this.turno=true
         for (let index = 0; index < this.personas.length; index++) {
             if (!this.personas[index].pierde && !this.personas[index].pasar) {
@@ -140,6 +142,10 @@ class Cupier extends Juego {
         }
         if (this.turno) {
             console.log("hola");
+            this.personas.forEach(value=>{
+
+                value.activo ? value.suma> this.suma ?  this.juegaCartas(baraja) :console.log("es menor") : console.log("No activo");
+            });
         }
     }
 }
@@ -212,12 +218,12 @@ const cojeCartaDom = (jugador, cartasJugador, sumaJugador, zonaJugador, e,cupier
         zonaJugador.style.display = "none";
         sumaJugador.style.fontSize = "20px";
         sumaJugador.innerHTML = "Te has pasado tu total es de: " + jugador.suma;
-        cupier.empiezaTurno();
+        cupier.empiezaTurno(baraja.sacaCarta());
         return;
     }
     //En caso contrario Seguimos con el juego
     sumaJugador.innerHTML = jugador.suma;
-    cupier.empiezaTurno();
+    cupier.empiezaTurno(baraja.sacaCarta());
 }
 
 
@@ -237,7 +243,7 @@ const plantarse = (jugador,elemento,cupier) => {
         
         elemento.parentElement.appendChild(div);    
        } 
-       cupier.empiezaTurno();
+       cupier.empiezaTurno(baraja.sacaCarta());
 }
 
 //------------------------------------------------------------Eventos y manejo del DOM-----------------------------------------------------------
@@ -383,6 +389,7 @@ iniciarJuego.addEventListener("click", () => {
     //Itera por cada jugador y comprueba segun el índice si es un jugador activo o no 
     jugadores.forEach((jugador, index) => {
         jugador.pasar = (index + 1) > nJugadores ? true : false;
+        jugador.activo= jugador.pasar ? false : true;
     });
 
     //Inicializa los datos de los jugadores activos 
