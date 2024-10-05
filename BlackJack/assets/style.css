@@ -208,3 +208,22 @@ section {
     height: 50px;
     width: 200px;
 }
+#juegoNuevo {
+    position: absolute;  
+    top: 28%;           
+    left: 25%;           
+    transform: translate(-50%, -50%); 
+    padding: 25px;
+    background-color: white;
+    border: black solid 3px;
+    color: black;
+    transition: all ease-in-out 0.5s;
+}
+#juegoNuevo:hover{
+    background-color: black;
+    border: white solid 3px;
+    color: white;
+    padding: 27px;
+    cursor: pointer;
+
+}
