@@ -542,17 +542,8 @@ let nJugadores;
 
 
 
-
-
-
-
-
 //Inicia un mazo
 baraja.creaMazo();
-
-
-
-
 
 
 
