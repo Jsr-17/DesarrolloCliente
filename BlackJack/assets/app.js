@@ -1,7 +1,6 @@
 
 //-------------------------------------------------Clase Baraja-----------------------------------------------
 
-
 //Clase encargada de la lógica del mazo de cartas
 class Baraja {
     constructor() {
@@ -307,6 +306,24 @@ const cojeCartaDom = (jugador, cartasJugador, sumaJugador, zonaJugador, e, cupie
 
 
 const reiniciaJuego = () => {
+
+
+fetch('http://localhost:3000/envia-datos', {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify(jugadores)
+})
+.then(response => response.json())  
+
+.then(data => {
+    console.log('Success:', data); 
+})
+.catch(error => {
+    console.error('Error:', error);
+});
+
     baraja.creaMazo();
 
     jugadores.map((value) => value.carta = []);
@@ -493,19 +510,19 @@ const j4Pasar = document.getElementById("pasar4");
 const baraja = new Baraja();
 
 //Propiedades del 1 jugador
-const jugador1 = new Usuario(300, "Invitado1", "", [], 0, false, false);
+const jugador1 = new Usuario(300, "Invitado 1", "", [], 0, false, false);
 const cartasjugador1 = new Cartas([], jugador1.carta, jugador1Zona);
 
 //Propiedades del jugador 2
-const jugador2 = new Usuario(300, "Invitado2", "", [], 0, false, false);
+const jugador2 = new Usuario(300, "Invitado 2", "", [], 0, false, false);
 const cartasjugador2 = new Cartas([], jugador2.carta, jugador2Zona);
 
 //Propiedades del jugador 2
-const jugador3 = new Usuario(300, "Invitado3", "", [], 0, false, false);
+const jugador3 = new Usuario(300, "Invitado 3", "", [], 0, false, false);
 const cartasjugador3 = new Cartas([], jugador3.carta, jugador3Zona);
 
 //Propiedades del jugador 2
-const jugador4 = new Usuario(300, "Invitado4", "", [], 0, false, false);
+const jugador4 = new Usuario(300, "Invitado 4", "", [], 0, false, false);
 const cartasjugador4 = new Cartas([], jugador4.carta, jugador4Zona);
 
 
@@ -564,7 +581,6 @@ iniciarJuego.addEventListener("click", () => iniciaJuego());
 
 
 jugarDeNuevo.addEventListener("click",()=>reiniciaJuego())
-
 
 
 
