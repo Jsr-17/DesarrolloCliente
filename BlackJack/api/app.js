@@ -11,7 +11,7 @@ app.use(express.json());
 
 app.get("/",(req,res)=>{
 
-    res.send("Consola Limpia");
+    res.send("boba");
     console.clear();
 });
 
