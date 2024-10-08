@@ -117,13 +117,18 @@ class Juego {
 
 class Usuario extends Juego {
 
+<<<<<<< HEAD
     constructor(dinero, usuario, pass, carta, suma, pierde, pasar, activo ) {
+=======
+    constructor(dinero, usuario, pass, carta, suma, pierde, pasar, activo,zonaJugador) {
+>>>>>>> 5532b5719a1f0814faca609c8b09da831e1e92f4
         super(carta, suma, pierde)
         this.dinero = dinero;
         this.usuario = usuario;
         this.pass = pass;
         this.pasar = pasar;
         this.activo = activo;
+        this.zonaJugador=zonaJugador;
 
 
     }
@@ -161,7 +166,7 @@ class Cupier extends Juego {
                 //Almaceno la suma más alta de las personas
                 this.personas[index].suma <= 21 && this.personas[index].suma > masAlta ? masAlta = this.personas[index].suma : masAlta;
 
-                masAlta == 21 ? masAlta - 2 : masAlta;
+                masAlta == 21 ? masAlta -= 2 : masAlta;
 
                 //El cupier saca cartas hasta superar esa cifra o sacar 21
 
@@ -190,6 +195,8 @@ class Cupier extends Juego {
             //Recupero sus nombres
             let nombreGanadores = ganadores.map((value) => value.usuario);
             const nombreEmpate = empates.map((value) => value.usuario);
+
+            ganadores.forEach(element => element.dinero+=60);
 
             //Creo las cabeceras
             const h2Ganador = document.createElement("h2");
@@ -327,6 +334,8 @@ fetch('http://localhost:3000/envia-datos', {
     baraja.creaMazo();
 
     jugadores.map((value) => value.carta = []);
+    jugadores.map(value=>value.dinero-=10);
+
     cartas.map((value) => {
         value.cartas = [];
         value.url = [];
@@ -376,6 +385,7 @@ fetch('http://localhost:3000/envia-datos', {
 
         cartas[index].muestraCartas();
     }
+
     cupier.juegaCartas(baraja.sacaCarta());
     cupierZona.innerHTML = '<h1>Cupier  Suma Total: <span id="sumCupier"></span> </h1>'
     
@@ -423,15 +433,23 @@ const iniciaJuego = () => {
 
     for (let index = 0; index < nJugadores; index++) {
 
+
         jugadores[index].juegaCartas(baraja.sacaCarta());
         jugadores[index].juegaCartas(baraja.sacaCarta());
+        
 
         jugadoresDin[index].innerHTML = jugadores[index].dinero;
         jugadoresSum[index].innerHTML = jugadores[index].suma;
+        jugadoresName[index].innerText=jugadores[index].usuario;
+
 
         cartas[index].muestraCartas();
 
     }
+    jugadores.forEach((jugador) => {
+            !jugador.activo ? jugador.zonaJugador.style.display="none" :jugador.zonaJugador.style.display="block";
+    });
+
 }
 
 //Función con la que cada jugador se planta y no pide mas cartas, y lo plasma en el html 
@@ -475,32 +493,51 @@ const cupierZona = document.getElementById("cupier");
 const jugador1Zona = document.getElementById("j1");
 const jugador2Zona = document.getElementById("j2");
 const jugador3Zona = document.getElementById("j3");
-const jugador4Zona = document.getElementById("j4")
+const jugador4Zona = document.getElementById("j4");
+const jugador5Zona = document.getElementById("j5");
+const jugador6Zona = document.getElementById("j6");
 
 //Dinero de jugador
 const jugador1Din = document.getElementById("din1");
 const jugador2Din = document.getElementById("din2");
 const jugador3Din = document.getElementById("din3");
 const jugador4Din = document.getElementById("din4");
+const jugador5Din = document.getElementById("din5");
+const jugador6Din = document.getElementById("din6");
 
 //Suma total de cartas
 const jugador1Sum = document.getElementById("sum1");
 const jugador2Sum = document.getElementById("sum2");
 const jugador3Sum = document.getElementById("sum3");
 const jugador4Sum = document.getElementById("sum4");
+const jugador5Sum = document.getElementById("sum5");
+const jugador6Sum = document.getElementById("sum6");
+
 const cupierSum = document.getElementById("sumCupier");
+
+//NombreJugadores
+const jugador1Name = document.getElementById("nameJug1");
+const jugador2Name = document.getElementById("nameJug2");
+const jugador3Name = document.getElementById("nameJug3");
+const jugador4Name = document.getElementById("nameJug4");
+const jugador5Name = document.getElementById("nameJug5");
+const jugador6Name = document.getElementById("nameJug6");
 
 //Pedir Cartas 
 const j1PideCarta = document.getElementById("pCarta1");
 const j2PideCarta = document.getElementById("pCarta2");
 const j3PideCarta = document.getElementById("pCarta3");
 const j4PideCarta = document.getElementById("pCarta4");
+const j5PideCarta = document.getElementById("pCarta5");
+const j6PideCarta = document.getElementById("pCarta6");
 
 //Pasar Turno o Plantarse
 const j1Pasar = document.getElementById("pasar1");
 const j2Pasar = document.getElementById("pasar2");
 const j3Pasar = document.getElementById("pasar3");
 const j4Pasar = document.getElementById("pasar4");
+const j5Pasar = document.getElementById("pasar5");
+const j6Pasar = document.getElementById("pasar6");
 
 
 //---------------------------------------------------------------------Objetos Juego---------------------------------------------------------------------------
@@ -510,20 +547,28 @@ const j4Pasar = document.getElementById("pasar4");
 const baraja = new Baraja();
 
 //Propiedades del 1 jugador
-const jugador1 = new Usuario(300, "Invitado 1", "", [], 0, false, false);
+const jugador1 = new Usuario(300, "Invitado 1", "", [], 0, false, false,true, jugador1Zona);
 const cartasjugador1 = new Cartas([], jugador1.carta, jugador1Zona);
 
 //Propiedades del jugador 2
-const jugador2 = new Usuario(300, "Invitado 2", "", [], 0, false, false);
+const jugador2 = new Usuario(300, "Invitado 2", "", [], 0, false, false,true,jugador2Zona);
 const cartasjugador2 = new Cartas([], jugador2.carta, jugador2Zona);
 
 //Propiedades del jugador 2
-const jugador3 = new Usuario(300, "Invitado 3", "", [], 0, false, false);
+const jugador3 = new Usuario(300, "Invitado 3", "", [], 0, false, false,true,jugador3Zona);
 const cartasjugador3 = new Cartas([], jugador3.carta, jugador3Zona);
 
 //Propiedades del jugador 2
-const jugador4 = new Usuario(300, "Invitado 4", "", [], 0, false, false);
+const jugador4 = new Usuario(300, "Invitado 4", "", [], 0, false, false,true,jugador4Zona);
 const cartasjugador4 = new Cartas([], jugador4.carta, jugador4Zona);
+
+//Propiedades del jugador 2
+const jugador5 = new Usuario(300, "Invitado 5", "", [], 0, false, false,true,jugador5Zona);
+const cartasjugador5 = new Cartas([], jugador5.carta, jugador5Zona);
+
+//Propiedades del jugador 2
+const jugador6 = new Usuario(300, "Invitado 6", "", [], 0, false, false,true,jugador6Zona);
+const cartasjugador6 = new Cartas([], jugador6.carta, jugador6Zona);
 
 
 
@@ -532,13 +577,14 @@ const cartasjugador4 = new Cartas([], jugador4.carta, jugador4Zona);
 
 
 //Propiedades agrupadas
-const jugadores = [jugador1, jugador2, jugador3, jugador4];
-const cartas = [cartasjugador1, cartasjugador2, cartasjugador3, cartasjugador4];
-const jugadoresZon = [jugador1Zona, jugador2Zona, jugador3Zona, jugador4Zona]
-const jugadoresDin = [jugador1Din, jugador2Din, jugador3Din, jugador4Din];
-const jugadoresSum = [jugador1Sum, jugador2Sum, jugador3Sum, jugador4Sum];
-const jugadorPlantarse = [j1Pasar, j2Pasar, j3Pasar, j4Pasar];
-const jugadorPedirCarta = [j1PideCarta, j2PideCarta, j3PideCarta, j4PideCarta]
+const jugadores = [jugador1, jugador2, jugador3, jugador4, jugador5, jugador6];
+const cartas = [cartasjugador1, cartasjugador2, cartasjugador3, cartasjugador4, cartasjugador5, cartasjugador6];
+const jugadoresZon = [jugador1Zona, jugador2Zona, jugador3Zona, jugador4Zona, jugador5Zona, jugador6Zona]
+const jugadoresDin = [jugador1Din, jugador2Din, jugador3Din, jugador4Din, jugador5Din, jugador6Din];
+const jugadoresSum = [jugador1Sum, jugador2Sum, jugador3Sum, jugador4Sum, jugador5Sum, jugador6Sum];
+const jugadorPlantarse = [j1Pasar, j2Pasar, j3Pasar, j4Pasar, j5Pasar, j6Pasar];
+const jugadorPedirCarta = [j1PideCarta, j2PideCarta, j5PideCarta, j6PideCarta];
+const jugadoresName=[jugador1Name,jugador2Name,jugador3Name,jugador4Name,jugador5Name,jugador6Name];
 
 
 
@@ -593,7 +639,9 @@ j3PideCarta.addEventListener("click", (e) => cojeCartaDom(jugador3, cartasjugado
 
 j4PideCarta.addEventListener("click", (e) => cojeCartaDom(jugador4, cartasjugador4, jugador4Sum, jugador4Zona, e, cupier));
 
+j5PideCarta.addEventListener("click", (e) => cojeCartaDom(jugador5, cartasjugador5, jugador5Sum, jugador5Zona, e, cupier));
 
+j6PideCarta.addEventListener("click", (e) => cojeCartaDom(jugador6, cartasjugador6, jugador6Sum, jugador6Zona, e, cupier));
 
 //Evento de plantarse y no pedir más cartas
 
@@ -601,4 +649,7 @@ j1Pasar.addEventListener("click", () => plantarse(jugador1, j1Pasar, cupier));
 j2Pasar.addEventListener("click", () => plantarse(jugador2, j2Pasar, cupier));
 j3Pasar.addEventListener("click", () => plantarse(jugador3, j3Pasar, cupier));
 j4Pasar.addEventListener("click", () => plantarse(jugador4, j4Pasar, cupier));
+j5Pasar.addEventListener("click", () => plantarse(jugador5, j5Pasar, cupier));
+j6Pasar.addEventListener("click", () => plantarse(jugador6, j6Pasar, cupier));
+
 
