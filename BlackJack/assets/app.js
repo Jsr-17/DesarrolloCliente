@@ -117,11 +117,7 @@ class Juego {
 
 class Usuario extends Juego {
 
-<<<<<<< HEAD
-    constructor(dinero, usuario, pass, carta, suma, pierde, pasar, activo ) {
-=======
     constructor(dinero, usuario, pass, carta, suma, pierde, pasar, activo,zonaJugador) {
->>>>>>> 5532b5719a1f0814faca609c8b09da831e1e92f4
         super(carta, suma, pierde)
         this.dinero = dinero;
         this.usuario = usuario;
