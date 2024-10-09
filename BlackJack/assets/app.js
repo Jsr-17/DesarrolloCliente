@@ -117,15 +117,15 @@ class Juego {
 
 class Usuario extends Juego {
 
-    constructor(dinero, usuario, pass, carta, suma, pierde, pasar, activo,zonaJugador,partidasGanadas) {
+    constructor(dinero, usuario, pass, carta, suma, pierde, pasar, activo, zonaJugador, partidasGanadas) {
         super(carta, suma, pierde)
         this.dinero = dinero;
         this.usuario = usuario;
         this.pass = pass;
         this.pasar = pasar;
         this.activo = activo;
-        this.zonaJugador=zonaJugador;
-        this.partidasGanadas=partidasGanadas;
+        this.zonaJugador = zonaJugador;
+        this.partidasGanadas = partidasGanadas;
 
 
     }
@@ -193,7 +193,7 @@ class Cupier extends Juego {
             let nombreGanadores = ganadores.map((value) => value.usuario);
             const nombreEmpate = empates.map((value) => value.usuario);
 
-            ganadores.forEach(element => element.dinero+=60);
+            ganadores.forEach(element => element.dinero += 60);
 
             //Creo las cabeceras
             const h2Ganador = document.createElement("h2");
@@ -228,7 +228,7 @@ class Cupier extends Juego {
 
 
         }
-    jugarDeNuevo.style.display="block";
+        jugarDeNuevo.style.display = "block";
     }
 }
 
@@ -310,33 +310,11 @@ const cojeCartaDom = (jugador, cartasJugador, sumaJugador, zonaJugador, e, cupie
 
 //función encargada de resetear el juego
 const reiniciaJuego = () => {
-
-//Petición al servidor para guardar los datos de los jugadores 
-fetch('http://localhost:3000/enviaDatos', {
-    //Como es guardar en la base de datos hago un post
-    method: "POST",
-    //paso el tipo de  contenido que va a recibir 
-    headers: {
-        "Content-Type": "application/json"
-    },
-    //Parseo el contenido que va a recibir la api 
-    body: JSON.stringify(jugadores)
-})
-//cuando la promesa se resuelve al parsea a json
-.then(response => response.json())  
-//Muestra por consola el resultado
-.then(data => {
-    console.log('Success:', data); 
-})
-//Si ocurre algun error durante la promesa capta el error y lo muestra
-.catch(error => {
-    console.error('Error:', error);
-});
-//resetea el mazo y los jugadores
+    //resetea el mazo y los jugadores
     baraja.creaMazo();
 
     jugadores.map((value) => value.carta = []);
-    jugadores.map(value=>value.dinero-=10);
+    jugadores.map(value => value.dinero -= 10);
 
     cartas.map((value) => {
         value.cartas = [];
@@ -376,9 +354,9 @@ fetch('http://localhost:3000/enviaDatos', {
         jugadores[index].juegaCartas(baraja.sacaCarta());
         jugadores[index].juegaCartas(baraja.sacaCarta());
 
-        jugadores[index].activo=true;
-        jugadores[index].pasar=false;
-        jugadores[index].pierde=false;
+        jugadores[index].activo = true;
+        jugadores[index].pasar = false;
+        jugadores[index].pierde = false;
 
         jugadoresDin[index].innerHTML = jugadores[index].dinero;
         jugadoresSum[index].innerHTML = jugadores[index].suma;
@@ -390,10 +368,10 @@ fetch('http://localhost:3000/enviaDatos', {
 
     cupier.juegaCartas(baraja.sacaCarta());
     cupierZona.innerHTML = '<h1>Cupier  Suma Total: <span id="sumCupier"></span> </h1>'
-    
+
     let suma = document.getElementById("sumCupier");
     suma.innerText = cupier.suma;
-    
+
     cartasCupier.muestraCartas();
     let imgn = document.createElement('img');
     imgn.src = "./assets/img/reverso-gris.png";
@@ -440,18 +418,18 @@ const iniciaJuego = () => {
 
         jugadores[index].juegaCartas(baraja.sacaCarta());
         jugadores[index].juegaCartas(baraja.sacaCarta());
-        
+
 
         jugadoresDin[index].innerHTML = jugadores[index].dinero;
         jugadoresSum[index].innerHTML = jugadores[index].suma;
-        jugadoresName[index].innerText=jugadores[index].usuario;
+        jugadoresName[index].innerText = jugadores[index].usuario;
 
 
         cartas[index].muestraCartas();
 
     }
     jugadores.forEach((jugador) => {
-            !jugador.activo ? jugador.zonaJugador.style.display="none" :jugador.zonaJugador.style.display="block";
+        !jugador.activo ? jugador.zonaJugador.style.display = "none" : jugador.zonaJugador.style.display = "block";
     });
 
 }
@@ -488,7 +466,7 @@ const menuInicio = document.querySelector(".menuInicio");
 const menuJugadores = document.querySelector(".menuJugadores");
 const obtnJugadores = document.getElementById("nJugadores");
 const iniciarJuego = document.getElementById("iniciarJuego");
-const jugarDeNuevo=document.getElementById("juegoNuevo");
+const jugarDeNuevo = document.getElementById("juegoNuevo");
 
 
 
@@ -551,27 +529,27 @@ const j6Pasar = document.getElementById("pasar6");
 const baraja = new Baraja();
 
 //Propiedades del 1 jugador
-const jugador1 = new Usuario(300, "Invitado 1", "", [], 0, false, false,true, jugador1Zona);
+const jugador1 = new Usuario(300, "Invitado 1", "", [], 0, false, false, true, jugador1Zona);
 const cartasjugador1 = new Cartas([], jugador1.carta, jugador1Zona);
 
 //Propiedades del jugador 2
-const jugador2 = new Usuario(300, "Invitado 2", "", [], 0, false, false,true,jugador2Zona);
+const jugador2 = new Usuario(300, "Invitado 2", "", [], 0, false, false, true, jugador2Zona);
 const cartasjugador2 = new Cartas([], jugador2.carta, jugador2Zona);
 
 //Propiedades del jugador 2
-const jugador3 = new Usuario(300, "Invitado 3", "", [], 0, false, false,true,jugador3Zona);
+const jugador3 = new Usuario(300, "Invitado 3", "", [], 0, false, false, true, jugador3Zona);
 const cartasjugador3 = new Cartas([], jugador3.carta, jugador3Zona);
 
 //Propiedades del jugador 2
-const jugador4 = new Usuario(300, "Invitado 4", "", [], 0, false, false,true,jugador4Zona);
+const jugador4 = new Usuario(300, "Invitado 4", "", [], 0, false, false, true, jugador4Zona);
 const cartasjugador4 = new Cartas([], jugador4.carta, jugador4Zona);
 
 //Propiedades del jugador 2
-const jugador5 = new Usuario(300, "Invitado 5", "", [], 0, false, false,true,jugador5Zona);
+const jugador5 = new Usuario(300, "Invitado 5", "", [], 0, false, false, true, jugador5Zona);
 const cartasjugador5 = new Cartas([], jugador5.carta, jugador5Zona);
 
 //Propiedades del jugador 2
-const jugador6 = new Usuario(300, "Invitado 6", "", [], 0, false, false,true,jugador6Zona);
+const jugador6 = new Usuario(300, "Invitado 6", "", [], 0, false, false, true, jugador6Zona);
 const cartasjugador6 = new Cartas([], jugador6.carta, jugador6Zona);
 
 
@@ -588,7 +566,7 @@ const jugadoresDin = [jugador1Din, jugador2Din, jugador3Din, jugador4Din, jugado
 const jugadoresSum = [jugador1Sum, jugador2Sum, jugador3Sum, jugador4Sum, jugador5Sum, jugador6Sum];
 const jugadorPlantarse = [j1Pasar, j2Pasar, j3Pasar, j4Pasar, j5Pasar, j6Pasar];
 const jugadorPedirCarta = [j1PideCarta, j2PideCarta, j5PideCarta, j6PideCarta];
-const jugadoresName=[jugador1Name,jugador2Name,jugador3Name,jugador4Name,jugador5Name,jugador6Name];
+const jugadoresName = [jugador1Name, jugador2Name, jugador3Name, jugador4Name, jugador5Name, jugador6Name];
 
 
 
@@ -630,7 +608,7 @@ invitado.addEventListener("click", () => {
 iniciarJuego.addEventListener("click", () => iniciaJuego());
 
 
-jugarDeNuevo.addEventListener("click",()=>reiniciaJuego())
+jugarDeNuevo.addEventListener("click", () => reiniciaJuego())
 
 
 
@@ -662,19 +640,58 @@ j6Pasar.addEventListener("click", () => plantarse(jugador6, j6Pasar, cupier));
 //Aquí empieza la lógica para el inicio de sesión y creación de usuarios
 
 
-const btnInicioSesion=document.querySelector("#btnIniciarSesion");
-const inputNombreUsuario=document.querySelector("#nombreUsuario");
-const inputContrasenyaUsario=document.querySelector("#contrasenyaUsuario");
+const btnInicioSesion = document.querySelector("#btnIniciarSesion");
+const inputNombreUsuario = document.querySelector("#nombreUsuario");
+const inputContrasenyaUsario = document.querySelector("#contrasenyaUsuario");
 
-const nuevaCuenta=document.querySelector("#nuevaCuenta");
+const nuevaCuenta = document.querySelector("#nuevaCuenta");
 
-const menuCreacion=document.querySelector("#menuCreacion");
+const menuCreacion = document.querySelector("#menuCreacion");
 const nombreUsuarioNuevo = document.getElementById('nombreUsuarioNuevo');
 const contrasenyaUsuarioNuevo = document.getElementById('contrasenyaUsuarioNuevo');
 const btnCrearJugador = document.getElementById('btnCrearJugador');
 const formCreaJugadores = document.getElementById('creaJugadores');
 
 
+//Funcion enviar Datos al servidor
+
+const enviaDatos = async (usuario, pass) => {
+    const jugador = new Usuario();
+    jugador.usuario = usuario;
+    jugador.pass = pass;
+
+    try {
+
+        //Petición al servidor para guardar los datos de los jugadores 
+        const data = await fetch('http://localhost:3000/enviaDatos', {
+            //Como es guardar en la base de datos hago un post
+            method: "POST",
+            //paso el tipo de  contenido que va a recibir 
+            headers: {
+                "Content-Type": "application/json"
+            },
+            //Parseo el contenido que va a recibir la api 
+            body: JSON.stringify(jugador)
+        })
+        //cuando la promesa se resuelve al parsea a json
+        const resultado=await data.json();
+        return resultado;
+
+    } catch (err) {
+        //Si ocurre algun error durante la promesa capta el error y lo muestra
+        console.log(err);
+
+    }
+
+}
+
+btnInicioSesion.addEventListener("click",async (e)=>{
+    e.preventDefault();
+    const datos= await enviaDatos(inputNombreUsuario.value,inputContrasenyaUsario.value);
+    console.log(datos);
+
+    
+})
 
 
 
@@ -683,7 +700,7 @@ const formCreaJugadores = document.getElementById('creaJugadores');
 
 //Eventos
 
-nuevaCuenta.addEventListener("click",()=>{
+nuevaCuenta.addEventListener("click", () => {
     menuInicio.style.display = "none";
     menuCreacion.style.display = "block";
 });
@@ -695,18 +712,18 @@ formCreaJugadores.addEventListener('submit', (e) => {
     const nombre = nombreUsuarioNuevo.value;
     const contrasenya = contrasenyaUsuarioNuevo.value;
 
-    const jugadorNuevo=new Usuario(500,nombre,contrasenya);
-    jugadorNuevo.partidasGanadas=0;
+    const jugadorNuevo = new Usuario(500, nombre, contrasenya);
+    jugadorNuevo.partidasGanadas = 0;
     console.log(jugadorNuevo);
 
-    fetch("http://localhost:3000/creaJugador",{
-        method:"POST",
-        headers:{
+    fetch("http://localhost:3000/creaJugador", {
+        method: "POST",
+        headers: {
             'Content-Type': 'application/json'
         },
-        body:JSON.stringify(jugadorNuevo)
-    }).then(response => response.json())  
-        .catch((error)=> console.log(error));
+        body: JSON.stringify(jugadorNuevo)
+    }).then(response => response.json())
+        .catch((error) => console.log(error));
 
 
 });
