@@ -3,30 +3,21 @@ const app=express();
 const cors=require("cors")
 const port = 3000;
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-mongoose.connect('mongodb://localhost/test', {useNewUrlParser: true});
 
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', ()=> {
-    const userSchema = new Schema({
-        Usuario:{ type:String,required:true},
-        created_at: { type: Date, default: Date.now },
-        pass:{type:String,required:true},
-        partidasGanadas:{type:String}
-    
-      });
-      const User = mongoose.model('User', userSchema);
+    mongoose.connect('mongodb://localhost/users')
+                    .then(()=>console.log("Conexión con la base de datos hecha")).catch(err=>console.log(err));
 
-      let usuario=new User({
-        Usuario:"datosJugador.usuario",
-        pass:23,
-        partidasGanadas:0
 
-    });
-    usuario.save();
-
+const esquemaUsuario= new mongoose.Schema({
+    nombre:{type:String},
+    pass:{type:String},
+    dinero:{type:Number},
+    partidasGanadas:{type:Number},
 });
+
+                
+const Usuario=mongoose.model("Usuario",esquemaUsuario);
+
 
 app.use(cors())
 app.use(express.json());
@@ -36,19 +27,44 @@ app.use(express.json());
 
 app.get("/12",(req,res)=>{
 
-    res.send("Tonto el que lo lea")
+
+    res.send(console.clear());
 });
 
-app.post("/envia-datos",(req,res)=>{
-    
-    data=req.body;
+app.get("/obtieneDatosJugador",async (req,res)=>{
+    const id =req.body.id;
 
-    //const datosJugador=data.filter((value)=>!value.usuario.includes("Invitado"));
-    //console.log(data);
-    //console.log(datosJugador);
+    const usuario= await Usuario.findOne({_id:id})
+
+    res.json(usuario.toJSON())
+        
+});
+
+
+app.post("/enviaDatos",(req,res)=>{
+    
+    const datosJugador=req.body;
 
     res.json({ mensaje: 'Juego iniciado', datos: data })
 });
+
+app.post("/creaJugador",async (req,res)=>{
+
+    const datosJugador=req.body;
+
+        const usuario=new Usuario({
+            nombre:datosJugador.usuario,
+            dinero:datosJugador.dinero,
+            pass:datosJugador.pass
+
+        });
+
+    const usuarioGuardado= await usuario.save();
+    res.send(usuarioGuardado.toJSON());
+    console.log(usuarioGuardado);
+}
+
+)
 
 app.listen(port,()=>console.log("Server iniciado"));
 

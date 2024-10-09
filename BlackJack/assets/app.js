@@ -311,7 +311,7 @@ const cojeCartaDom = (jugador, cartasJugador, sumaJugador, zonaJugador, e, cupie
 const reiniciaJuego = () => {
 
 
-fetch('http://localhost:3000/envia-datos', {
+fetch('http://localhost:3000/enviaDatos', {
     method: "POST",
     headers: {
         "Content-Type": "application/json"
