@@ -227,3 +227,91 @@ section {
     cursor: pointer;
 
 }
+
+
+
+#menuCreacion {
+    height: 75%;
+    width: 50%;
+    border: 3px white solid;
+    background-color: rgb(220, 220, 220);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    color: rgb(6, 76, 18);
+    transition: all 1s ease-in-out;
+    display: none;
+
+}
+
+
+#menuCreacion>h2 {
+    margin: 45px;
+    font-size: 35px;
+    color: rgb(6, 76, 18);
+
+}
+
+#menuCreacion>form {
+    margin: 50px;
+    font-size: 21px;
+    padding: 20px;
+
+}
+
+#menuCreacion>form>p {
+    margin: 6px;
+}
+
+#menuCreacion>form>input[type="text"] {
+    margin: 6px;
+    width: 250px;
+    height: 25px;
+}
+
+#menuCreacion>form>input[type="submit"] {
+    width: 45px;
+    height: 20px;
+    padding: 13px;
+    color: rgb(255, 255, 255);
+    border: 2px solid white;
+    background-color: rgb(119, 119, 119);
+    transition: all 0.4s ease-in-out;
+    border-radius: 25px;
+}
+
+#menuCreacion>form>input[type="submit"]:hover {
+    cursor: pointer;
+    width: 50px;
+    height: 26px;
+    border: 2px solid rgb(220, 220, 220);
+    ;
+    color: rgb(119, 119, 119);
+    ;
+    background-color: white;
+}
+
+#menuCreacion>form>span {
+    font-size: 13px;
+    color: blue;
+}
+
+#menuCreacion>form>span:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+#menuCreacion>p {
+    border: 3px solid rgb(6, 76, 18);
+    padding: 25px;
+    transition: all 0.4s ease-in-out;
+
+}
+
+#menuCreacion>p:hover {
+    border: 2px solid rgb(220, 220, 220);
+    ;
+    background-color: white;
+    cursor: pointer;
+}

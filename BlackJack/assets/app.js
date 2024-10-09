@@ -117,7 +117,7 @@ class Juego {
 
 class Usuario extends Juego {
 
-    constructor(dinero, usuario, pass, carta, suma, pierde, pasar, activo,zonaJugador) {
+    constructor(dinero, usuario, pass, carta, suma, pierde, pasar, activo,zonaJugador,partidasGanadas) {
         super(carta, suma, pierde)
         this.dinero = dinero;
         this.usuario = usuario;
@@ -125,6 +125,7 @@ class Usuario extends Juego {
         this.pasar = pasar;
         this.activo = activo;
         this.zonaJugador=zonaJugador;
+        this.partidasGanadas=partidasGanadas;
 
 
     }
@@ -307,26 +308,31 @@ const cojeCartaDom = (jugador, cartasJugador, sumaJugador, zonaJugador, e, cupie
     cupier.empiezaTurno(baraja);
 }
 
-
+//función encargada de resetear el juego
 const reiniciaJuego = () => {
 
-
+//Petición al servidor para guardar los datos de los jugadores 
 fetch('http://localhost:3000/enviaDatos', {
+    //Como es guardar en la base de datos hago un post
     method: "POST",
+    //paso el tipo de  contenido que va a recibir 
     headers: {
         "Content-Type": "application/json"
     },
+    //Parseo el contenido que va a recibir la api 
     body: JSON.stringify(jugadores)
 })
+//cuando la promesa se resuelve al parsea a json
 .then(response => response.json())  
-
+//Muestra por consola el resultado
 .then(data => {
     console.log('Success:', data); 
 })
+//Si ocurre algun error durante la promesa capta el error y lo muestra
 .catch(error => {
     console.error('Error:', error);
 });
-
+//resetea el mazo y los jugadores
     baraja.creaMazo();
 
     jugadores.map((value) => value.carta = []);
@@ -345,7 +351,7 @@ fetch('http://localhost:3000/enviaDatos', {
     const divPlantarse = document.querySelectorAll(".plantarse");
     const img = document.querySelectorAll('img');
     const h2 = document.querySelectorAll('h2');
-    
+    //Reseteo de html
 
     h2.forEach((element) => {
         element.remove()
@@ -400,14 +406,16 @@ fetch('http://localhost:3000/enviaDatos', {
 
 
 
-
+//función encargada del inicio sesión
 const iniciaJuego = () => {
 
+    //oculto el menú
     menuJugadores.style.display = "none";
     modal.style.display = "none";
-
+    //obtengo número de valores
     nJugadores = obtnJugadores.value;
 
+    //Cartas del cupier
     cupier.juegaCartas(baraja.sacaCarta());
     cartasCupier.muestraCartas();
 
@@ -647,5 +655,61 @@ j3Pasar.addEventListener("click", () => plantarse(jugador3, j3Pasar, cupier));
 j4Pasar.addEventListener("click", () => plantarse(jugador4, j4Pasar, cupier));
 j5Pasar.addEventListener("click", () => plantarse(jugador5, j5Pasar, cupier));
 j6Pasar.addEventListener("click", () => plantarse(jugador6, j6Pasar, cupier));
+
+
+//-----------------------------------------------------------------------------------------------------------------------\\\
+
+//Aquí empieza la lógica para el inicio de sesión y creación de usuarios
+
+
+const btnInicioSesion=document.querySelector("#btnIniciarSesion");
+const inputNombreUsuario=document.querySelector("#nombreUsuario");
+const inputContrasenyaUsario=document.querySelector("#contrasenyaUsuario");
+
+const nuevaCuenta=document.querySelector("#nuevaCuenta");
+
+const menuCreacion=document.querySelector("#menuCreacion");
+const nombreUsuarioNuevo = document.getElementById('nombreUsuarioNuevo');
+const contrasenyaUsuarioNuevo = document.getElementById('contrasenyaUsuarioNuevo');
+const btnCrearJugador = document.getElementById('btnCrearJugador');
+const formCreaJugadores = document.getElementById('creaJugadores');
+
+
+
+
+
+
+
+
+//Eventos
+
+nuevaCuenta.addEventListener("click",()=>{
+    menuInicio.style.display = "none";
+    menuCreacion.style.display = "block";
+});
+
+
+formCreaJugadores.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const nombre = nombreUsuarioNuevo.value;
+    const contrasenya = contrasenyaUsuarioNuevo.value;
+
+    const jugadorNuevo=new Usuario(500,nombre,contrasenya);
+    jugadorNuevo.partidasGanadas=0;
+    console.log(jugadorNuevo);
+
+    fetch("http://localhost:3000/creaJugador",{
+        method:"POST",
+        headers:{
+            'Content-Type': 'application/json'
+        },
+        body:JSON.stringify(jugadorNuevo)
+    }).then(response => response.json())  
+        .catch((error)=> console.log(error));
+
+
+});
+
 
 

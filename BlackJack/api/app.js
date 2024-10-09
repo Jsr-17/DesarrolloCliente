@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 
 
 const esquemaUsuario= new mongoose.Schema({
-    nombre:{type:String},
+    usuario:{type:String},
     pass:{type:String},
     dinero:{type:Number},
     partidasGanadas:{type:Number},
@@ -25,8 +25,7 @@ app.use(express.json());
 
 
 
-app.get("/12",(req,res)=>{
-
+app.get("/clear",(req,res)=>{
 
     res.send(console.clear());
 });
@@ -50,18 +49,20 @@ app.post("/enviaDatos",(req,res)=>{
 
 app.post("/creaJugador",async (req,res)=>{
 
-    const datosJugador=req.body;
+    const {usuario,dinero,pass,partidasGanadas}=req.body;
 
-        const usuario=new Usuario({
-            nombre:datosJugador.usuario,
-            dinero:datosJugador.dinero,
-            pass:datosJugador.pass
+        const guardarUsuario=new Usuario({
+            usuario:usuario,
+            dinero:dinero,
+            pass:pass,
+            partidasGanadas:partidasGanadas,
 
         });
 
-    const usuarioGuardado= await usuario.save();
-    res.send(usuarioGuardado.toJSON());
-    console.log(usuarioGuardado);
+    res.send(guardarUsuario.toJSON());
+    const guardado= await guardarUsuario.save();
+    console.log(guardado);
+    
 }
 
 )
