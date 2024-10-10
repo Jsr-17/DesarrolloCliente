@@ -1,3 +1,4 @@
+//Importacion de librerias 
 const express = require('express');
 const app = express();
 const cors = require("cors")
@@ -31,11 +32,16 @@ app.get("/clear", (req, res) => {
 });
 
 app.get("/obtieneDatosJugador", async (req, res) => {
-    const { usuario, pass } = req.body;
+    const { usuario, pass } = req.query;
 
-    const user = await Usuario.findOne({ usuario, pass });
-
-    res.send(user);
+    try{
+        const user = await Usuario.findOne({ usuario, pass });
+        console.log(user);
+        
+        res.json(user);
+    }catch(err){
+        console.log(err);
+    }
 });
 
 
@@ -43,13 +49,38 @@ app.post("/enviaDatos", async (req, res) => {
 
     const { usuario, pass } = req.body;
     try {
+
         const user = await Usuario.findOne({ usuario });
 
         if (user.pass == pass) {
 
-            res.send(user);
+            res.status(200).send(user);
+        }else{
+            res.status(401).send();
         }
+
     } catch (err) {
+
+        console.log(err);
+    }
+});
+
+app.put("/actualizaDatos", async (req, res) => {
+
+    const { usuario,dinero } = req.body;
+    try {
+            console.log(usuario,dinero);
+
+        const user = await Usuario.findOneAndUpdate({ usuario },{dinero},{new:true});
+
+
+        console.log(user);
+
+        res.status(200).send(user);
+       
+
+    } catch (err) {
+
         console.log(err);
     }
 });
@@ -70,8 +101,9 @@ app.post("/creaJugador", async (req, res) => {
         });
 
         const user = await guardarUsuario.save();
-        res.status(200);
-        
+        res.status(200).send();
+    }else{
+         res.status(409).send("El usuario ya existe");
     }
 }
 

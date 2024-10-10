@@ -309,7 +309,23 @@ const cojeCartaDom = (jugador, cartasJugador, sumaJugador, zonaJugador, e, cupie
 }
 
 //función encargada de resetear el juego
-const reiniciaJuego = () => {
+const reiniciaJuego = async() => {
+
+try{
+   const resultado= await fetch("http://localhost:3000/actualizaDatos",{
+        method:"PUT",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(jugador1)
+    })
+
+
+
+}catch(err){
+    console.log(err);
+}
+
     //resetea el mazo y los jugadores
     baraja.creaMazo();
 
@@ -643,6 +659,7 @@ j6Pasar.addEventListener("click", () => plantarse(jugador6, j6Pasar, cupier));
 const btnInicioSesion = document.querySelector("#btnIniciarSesion");
 const inputNombreUsuario = document.querySelector("#nombreUsuario");
 const inputContrasenyaUsario = document.querySelector("#contrasenyaUsuario");
+const formInicioSesion = document.querySelector("#inicioSesion");
 
 const nuevaCuenta = document.querySelector("#nuevaCuenta");
 
@@ -660,6 +677,7 @@ const enviaDatos = async (usuario, pass) => {
     jugador.usuario = usuario;
     jugador.pass = pass;
 
+
     try {
 
         //Petición al servidor para guardar los datos de los jugadores 
@@ -673,9 +691,8 @@ const enviaDatos = async (usuario, pass) => {
             //Parseo el contenido que va a recibir la api 
             body: JSON.stringify(jugador)
         })
-        //cuando la promesa se resuelve al parsea a json
-        const resultado=await data.json();
-        return resultado;
+        //cuando la promesa la devuelvo;
+        return data;
 
     } catch (err) {
         //Si ocurre algun error durante la promesa capta el error y lo muestra
@@ -685,11 +702,112 @@ const enviaDatos = async (usuario, pass) => {
 
 }
 
-btnInicioSesion.addEventListener("click",async (e)=>{
+btnInicioSesion.addEventListener("click", async (e) => {
     e.preventDefault();
-    const datos= await enviaDatos(inputNombreUsuario.value,inputContrasenyaUsario.value);
-    console.log(datos);
 
+    const noValido = document.querySelector("#noValido");
+    const existeJugador = document.querySelector("#existeJugador");
+
+
+    if (noValido) {
+        noValido.remove();
+    }
+    if (existeJugador) {
+        existeJugador.remove();
+    }
+
+    if (inputNombreUsuario.value.trim() == "" || inputContrasenyaUsario.value.trim() == "") {
+
+        const span = document.createElement("div");
+        span.style.color = "red";
+        span.style.fontSize = "23px";
+        span.textContent = "Introduzca un valor válido";
+        span.id = "noValido";
+        span.style.marginTop = "15px";
+        formInicioSesion.appendChild(span);
+
+        return;
+    }
+
+    const datos = await enviaDatos(inputNombreUsuario.value, inputContrasenyaUsario.value);
+
+    const { status, statusText } = datos;
+
+    if (status != 200) {
+
+        const span = document.createElement("div");
+        span.style.color = "red";
+        span.style.fontSize = "23px";
+        span.textContent = "Contraseña equivocada";
+        span.id = "existeJugador";
+        formInicioSesion.appendChild(span);
+    } else {
+        menuInicio.style.display = "none";
+        modal.style.display = "none";
+
+        try {
+            const jugador={
+                "usuario":   inputNombreUsuario.value,
+                    "pass": inputContrasenyaUsario.value,
+            }
+
+            const respuesta = await fetch(`http://localhost:3000/obtieneDatosJugador?usuario=${jugador.usuario}&pass=${jugador.pass}`);
+
+            if (respuesta.status != 200) {
+                console.log("Error");
+            }
+            const datos = await respuesta.json()
+            const {usuario,dinero} = datos;
+
+
+        nJugadores = 1;
+
+        //Cartas del cupier
+        cupier.juegaCartas(baraja.sacaCarta());
+        cartasCupier.muestraCartas();
+    
+    
+        let img = document.createElement('img');
+        img.src = "./assets/img/reverso-gris.png";
+        cupierZona.appendChild(img);
+        cupierSum.innerHTML = cupier.suma;
+        cupier.juegaCartas(baraja.sacaCarta());
+        
+        jugadores[0].usuario=usuario;
+        jugadores[0].dinero=dinero;
+    
+        //Itera por cada jugador y comprueba segun el índice si es un jugador activo o no 
+        jugadores.forEach((jugador, index) => {
+            jugador.pasar = (index + 1) > nJugadores ? true : false;
+            jugador.activo = jugador.pasar ? false : true;
+        });
+    
+        //Inicializa los datos de los jugadores activos 
+    
+        for (let index = 0; index < nJugadores; index++) {
+    
+    
+            jugadores[index].juegaCartas(baraja.sacaCarta());
+            jugadores[index].juegaCartas(baraja.sacaCarta());
+    
+    
+            jugadoresDin[index].innerHTML = jugadores[index].dinero;
+            jugadoresSum[index].innerHTML = jugadores[index].suma;
+            jugadoresName[index].innerText = jugadores[index].usuario;
+    
+    
+            cartas[index].muestraCartas();
+    
+        }
+        jugadores.forEach((jugador) => {
+            !jugador.activo ? jugador.zonaJugador.style.display = "none" : jugador.zonaJugador.style.display = "block";
+        });
+    
+  
+    } catch (err) {
+        console.log(err);
+    }
+    }
     
 })
 
@@ -709,33 +827,60 @@ nuevaCuenta.addEventListener("click", () => {
 formCreaJugadores.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const nombre = nombreUsuarioNuevo.value;
-    const contrasenya = contrasenyaUsuarioNuevo.value;
+    const nombre = nombreUsuarioNuevo.value.trim();
+    const contrasenya = contrasenyaUsuarioNuevo.value.trim();
+    const noValido = document.querySelector("#noValido");
+    const existeJugador = document.querySelector("#existeJugador");
+
+    if (noValido) {
+        noValido.remove();
+    }
+    if (existeJugador) {
+        existeJugador.remove();
+    }
+
+    if (nombre == "" && contrasenya == "") {
+        const span = document.createElement("div");
+        span.style.color = "red";
+        span.style.fontSize = "23px";
+        span.textContent = "Introduzca un valor válido";
+        span.id = "noValido";
+        formCreaJugadores.appendChild(span);
+        return;
+
+    }
 
     const jugadorNuevo = new Usuario(500, nombre, contrasenya);
     jugadorNuevo.partidasGanadas = 0;
-    console.log(jugadorNuevo);
-    try{
 
-    
+    try {
 
-    const respuesta=await fetch("http://localhost:3000/creaJugador", {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(jugadorNuevo)
-    });
-    const respuestaStatus=  await respuesta.statusText()
+        const respuesta = await fetch("http://localhost:3000/creaJugador", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jugadorNuevo)
+        });
 
-       console.log(respuestaStatus);
-   // respuesta. ? console.log(respuesta):console.log("El usuario ya existe");
+        const { statusText, status, ok } = respuesta;
 
-}catch(error){
-    console.log(error);
-}
+        if (status != 200) {
 
+            const span = document.createElement("div");
+            span.style.color = "red";
+            span.style.fontSize = "23px";
+            span.textContent = "Existe un jugador con ese nombre";
+            span.id = "existeJugador";
+            formCreaJugadores.appendChild(span);
+        } else {
+            menuInicio.style.display = "block";
+            menuCreacion.style.display = "none";
+        }
 
+    } catch (error) {
+        console.log(error);
+    }
 });
 
 
