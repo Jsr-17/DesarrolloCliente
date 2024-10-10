@@ -706,7 +706,7 @@ nuevaCuenta.addEventListener("click", () => {
 });
 
 
-formCreaJugadores.addEventListener('submit', (e) => {
+formCreaJugadores.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const nombre = nombreUsuarioNuevo.value;
@@ -715,15 +715,25 @@ formCreaJugadores.addEventListener('submit', (e) => {
     const jugadorNuevo = new Usuario(500, nombre, contrasenya);
     jugadorNuevo.partidasGanadas = 0;
     console.log(jugadorNuevo);
+    try{
 
-    fetch("http://localhost:3000/creaJugador", {
+    
+
+    const respuesta=await fetch("http://localhost:3000/creaJugador", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(jugadorNuevo)
-    }).then(response => response.json())
-        .catch((error) => console.log(error));
+    });
+    const respuestaStatus=  await respuesta.statusText()
+
+       console.log(respuestaStatus);
+   // respuesta. ? console.log(respuesta):console.log("El usuario ya existe");
+
+}catch(error){
+    console.log(error);
+}
 
 
 });

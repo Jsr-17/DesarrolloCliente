@@ -19,7 +19,7 @@ const esquemaUsuario = new mongoose.Schema({
 const Usuario = mongoose.model("Usuario", esquemaUsuario);
 
 
-app.use(cors())
+app.use(cors());
 app.use(express.json());
 
 
@@ -52,8 +52,6 @@ app.post("/enviaDatos", async (req, res) => {
     } catch (err) {
         console.log(err);
     }
-
-
 });
 
 app.post("/creaJugador", async (req, res) => {
@@ -72,15 +70,11 @@ app.post("/creaJugador", async (req, res) => {
         });
 
         const user = await guardarUsuario.save();
-        res.status(200).json(user);
+        res.status(200);
+        
     }
-
 }
 
 )
 
 app.listen(port, () => console.log("Server iniciado"));
-
-
-
-
