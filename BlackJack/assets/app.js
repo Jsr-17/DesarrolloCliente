@@ -312,7 +312,8 @@ const cojeCartaDom = (jugador, cartasJugador, sumaJugador, zonaJugador, e, cupie
 const reiniciaJuego = async() => {
 
 try{
-   const resultado= await fetch("http://localhost:3000/actualizaDatos",{
+   //Inicio una promise con un fetch a esta ruta de la api con el objetivo de realizar un PUT es decir una modificación
+    const resultado= await fetch("http://localhost:3000/actualizaDatos",{
         method:"PUT",
         headers: {
             'Content-Type': 'application/json'
@@ -701,14 +702,15 @@ const enviaDatos = async (usuario, pass) => {
     }
 
 }
-
+//Evento para hacer un inicio de sesión
 btnInicioSesion.addEventListener("click", async (e) => {
+    //No ejecuta el submit
     e.preventDefault();
-
+    //Elementos que creare de manera dinamica para que el usuario sea informadi
     const noValido = document.querySelector("#noValido");
     const existeJugador = document.querySelector("#existeJugador");
 
-
+    //borrar los mensajes de información de los usuarios
     if (noValido) {
         noValido.remove();
     }
@@ -716,6 +718,7 @@ btnInicioSesion.addEventListener("click", async (e) => {
         existeJugador.remove();
     }
 
+//Impedir que se puedan crear usuarios vacios
     if (inputNombreUsuario.value.trim() == "" || inputContrasenyaUsario.value.trim() == "") {
 
         const span = document.createElement("div");
@@ -729,10 +732,12 @@ btnInicioSesion.addEventListener("click", async (e) => {
         return;
     }
 
+    //Envio de una peticion post  con los datos del usuiario a la base de datos
     const datos = await enviaDatos(inputNombreUsuario.value, inputContrasenyaUsario.value);
-
+    //desedtructuro las propiedades del objeto 
     const { status, statusText } = datos;
 
+    //si no recibo un mensaje de aprobacion realizo esta logica
     if (status != 200) {
 
         const span = document.createElement("div");
@@ -741,25 +746,30 @@ btnInicioSesion.addEventListener("click", async (e) => {
         span.textContent = "Contraseña equivocada";
         span.id = "existeJugador";
         formInicioSesion.appendChild(span);
+
     } else {
+        //Si es correcta
         menuInicio.style.display = "none";
         modal.style.display = "none";
 
         try {
+            //Creo un objeto literal con los datros de los inputs
             const jugador={
                 "usuario":   inputNombreUsuario.value,
                     "pass": inputContrasenyaUsario.value,
             }
-
+            //mando un get para sacar la información del usuario
             const respuesta = await fetch(`http://localhost:3000/obtieneDatosJugador?usuario=${jugador.usuario}&pass=${jugador.pass}`);
-
+            
+            //si no recibo una respuesta afirmativa
             if (respuesta.status != 200) {
                 console.log("Error");
             }
+            //recibo los datos u los desestructuro
             const datos = await respuesta.json()
             const {usuario,dinero} = datos;
 
-
+            //solo voy hacer uso de un jugador el que esta almacenado en la base de datos
         nJugadores = 1;
 
         //Cartas del cupier
@@ -819,14 +829,17 @@ btnInicioSesion.addEventListener("click", async (e) => {
 //Eventos
 
 nuevaCuenta.addEventListener("click", () => {
+    //muestra el menu de los usuarios
     menuInicio.style.display = "none";
     menuCreacion.style.display = "block";
 });
 
 
 formCreaJugadores.addEventListener('submit', async (e) => {
+    //evita que el submit recargue la máquina
     e.preventDefault();
 
+    //variables para el control de los datos de los imputs y su perspectiva logica
     const nombre = nombreUsuarioNuevo.value.trim();
     const contrasenya = contrasenyaUsuarioNuevo.value.trim();
     const noValido = document.querySelector("#noValido");
@@ -849,12 +862,12 @@ formCreaJugadores.addEventListener('submit', async (e) => {
         return;
 
     }
-
+    //Creo un objeto de javascript con estos valores
     const jugadorNuevo = new Usuario(500, nombre, contrasenya);
     jugadorNuevo.partidasGanadas = 0;
 
     try {
-
+        //peticion a la base de datos para crear un usuario
         const respuesta = await fetch("http://localhost:3000/creaJugador", {
             method: "POST",
             headers: {
@@ -862,9 +875,10 @@ formCreaJugadores.addEventListener('submit', async (e) => {
             },
             body: JSON.stringify(jugadorNuevo)
         });
-
+        //desestructuro la respuesta
         const { statusText, status, ok } = respuesta;
 
+    //creacion de mensajes de información para el usuario
         if (status != 200) {
 
             const span = document.createElement("div");
@@ -885,3 +899,20 @@ formCreaJugadores.addEventListener('submit', async (e) => {
 
 
 
+/*
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+En una de las partes de mi código hago dos peticiones al servidor una con un post para comprobar si en la base de datos existe un usuario 
+y un get para sacar los datos quiero aclarar que tengo que investigar una manera para hacerlo en una sola y única petición pero de manera
+didáctica en el caso de cualquier posible modificación dejaré el codigo comentado en esta zona de aquí.
+Soy consciente de que es mas ineficiente pero de modo didactico la logica de pasar datos del html al servidor comprobar su legitimidad y después 
+hacer la petición con los datos que nos interesan me ha parecido más interesante que mejorar la velocidad de procesamiento.
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+*/
