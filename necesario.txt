@@ -1,0 +1,1 @@
+Los requisitos para poder iniciar la api son tener el puerto de la api disponible , poseer mongodb para que funcione la base de datos y poseer node 

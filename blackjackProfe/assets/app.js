@@ -90,7 +90,7 @@ btnNuevo.addEventListener("click", () => {
   for (let index = 0; index < marcador.length; index++) {
     marcador[index].innerText = 0;
   }
-  baraja=[]
+  baraja = []
   crearBaraja();
   divBancaCarta.innerHTML = "";
   divJugadorCarta.innerHTML = "";
@@ -112,7 +112,10 @@ const turnoBanca = (puntosJugador) => {
     imgCarta.classList.add("carta");
     divBancaCarta.append(imgCarta);
   } while (puntosBanca < puntosJugador && puntosJugador <= 21);
-  puntosBanca === puntosJugador? (resultado.innerHTML = "empate"): puntosJugador > puntosBanca && puntosJugador <= 21? (resultado.innerHTML = "Gana jugador"): (resultado.innerHTML = "Gana la banca");
+  puntosBanca === puntosJugador ? (resultado.innerHTML = "empate") : 
+  puntosJugador > puntosBanca && puntosJugador <= 21||puntosBanca>21 ? 
+  (resultado.innerHTML = "Gana jugador") : 
+  (resultado.innerHTML = "Gana la banca");
 };
 
 crearBaraja();
