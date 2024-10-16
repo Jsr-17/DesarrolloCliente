@@ -764,6 +764,7 @@ btnInicioSesion.addEventListener("click", async (e) => {
             //si no recibo una respuesta afirmativa
             if (respuesta.status != 200) {
                 console.log("Error");
+                return;
             }
             //recibo los datos u los desestructuro
             const datos = await respuesta.json()
