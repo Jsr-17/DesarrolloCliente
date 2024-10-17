@@ -133,3 +133,4 @@ app.post("/creaJugador", async (req, res) => {
 )
 //método encargado de express para abrir el puerto e iniciar el servidor 
 app.listen(port, () => console.log("Server iniciado"));
+
