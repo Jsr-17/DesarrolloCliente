@@ -48,6 +48,13 @@ ejecutar1.addEventListener("click", () => {
       .then((data) => (resultado.textContent = JSON.stringify(data, null, 2)))
       .catch((err) => console.log(err));
 
+    fetch(" Https://apis.datos.gob.ar/georef/api/provincias ")
+      .then((resp) => resp.json())
+      .then((data) => {
+        data.provincias.map((data) => console.log(data));
+      })
+      .catch((err) => console.log(err));
+
     //Ejemplo con async
 
     const Ejercicio1Async = async () => {

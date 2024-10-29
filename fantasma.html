@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="justify-content-center align-items-center">
+        <canvas id="fantasma" width="500px" height="500px"></canvas>
+      </div>
+    </div>
+    <script>
+      (() => {
+        const fantasma = document.querySelector("#fantasma");
+
+        const ctx = fantasma.getContext("2d");
+
+        ctx.fillStyle = "black";
+
+        //rect( posicion x, posicion y, ancho , alto)
+        ctx.arc(75, 75, 50, 3, Math.PI * 2, false); // cabeza del fantasma
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(66, 65, 8, 0, Math.PI * 2, true); //Ojo izquierdo
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(84, 65, 8, 0, Math.PI * 2, true); //ojo derecho
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(60, 65, 13, 0, Math.PI * 2, true); //zona de ojo izquierdo
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(90, 65, 13, 0, Math.PI * 2, true); //zona de ojo derecho
+        ctx.stroke();
+
+        //Colas del fantasma
+        //moveTo(posicion x , posicion y )
+        //Colocar el punto del trazo en esas posiciones
+        //moveTo(posicion x , posicion y )
+
+        ctx.beginPath();
+        ctx.moveTo(123, 102);
+        ctx.lineTo(125, 73);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(123, 103);
+        ctx.lineTo(110, 90);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(110, 90);
+        ctx.lineTo(100, 190);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(100, 190);
+        ctx.lineTo(80, 110);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(80, 110);
+        ctx.lineTo(70, 100);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(70, 100);
+        ctx.lineTo(60, 240);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(60, 240);
+        ctx.lineTo(50, 240);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(50, 240);
+        ctx.lineTo(25, 80);
+        ctx.stroke();
+      })();
+    </script>
+  </body>
+</html>
