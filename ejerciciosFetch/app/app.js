@@ -74,6 +74,7 @@ ejecutar1.addEventListener("click", () => {
 //------------------------------------------------------------------------Ejercicio 2-------------------------------------------------------------------------
 
 ejecutar2.addEventListener("click", () => {
+//contenido del ejercicio 
   contenedor.innerHTML = `
   <div class="row">
             <p class="mb-2">
@@ -124,18 +125,23 @@ ejecutar2.addEventListener("click", () => {
                 </div>
 
           </div>`;
+          //boton que ejecuta la cuncion para obtener acceso a las funcionalidades
   let ejecutar = document.querySelector("#ejecutar");
 
   ejecutar.addEventListener("click", () => {
     //Ejercicio 2
+    //Selecciono los datos del html
     let resultado = document.querySelector("#ejercicio");
     let resultadoAsync = document.querySelector("#ejercicioAsync");
     let form = document.querySelector("#form");
     let clave = document.querySelector("#clave");
     let valor = document.querySelector("#valor");
-
+	
+	//hago una peticion a la api
     fetch("https://jsonplaceholder.typicode.com/users")
+    //resuelve la promesa volviendola en formato json
       .then((resp) => resp.json())
+      //convierte el resultado de la promesa a un formato entendible por el navegador 
       .then((data) => (resultado.innerHTML = JSON.stringify(data, null, 2)))
       .catch((err) => err);
 
@@ -143,21 +149,25 @@ ejecutar2.addEventListener("click", () => {
 
     const Ejercicio2Async = async (prop, dato) => {
       try {
+      //obtengo la respuesta del servidor almacenandola en una variable
         const resp = await fetch("https://jsonplaceholder.typicode.com/users");
+ 	//obtengo el resultado en formato json de la respuesta
         const data = await resp.json();
+        //hago una busqueda filtrando por la propiedad y el dato cual e l usuario a pasado por el formulario
         const objResultado = data.find((user) => user[prop] == dato);
+        //si el usuario pasa un valor no valido 
         if (objResultado === undefined) {
           resultadoAsync.innerHTML = "<p>Datos no válidos</p>";
           return;
         }
-
+	//desestructuro el objeto resultado para darle un formato mas sencillo y poder mostrarlo de una manera mas sencilla
         const {
           name,
           username,
           email,
           address: { street, city },
         } = objResultado;
-
+	//meto el resultado en el contenedor 
         resultadoAsync.innerHTML = `
               <div class="mt-2" >
               Encontrados los siguientes datos:
@@ -175,7 +185,7 @@ ejecutar2.addEventListener("click", () => {
         console.log(error);
       }
     };
-
+	//evento que maneja el  formulario del cual recolecto los datos 
     form.addEventListener("submit", (e) => {
       e.preventDefault();
       Ejercicio2Async(clave.value, valor.value);
@@ -224,14 +234,15 @@ ejecutar3.addEventListener("click", () => {
             </div>
         </div>
       </div>`;
+      //boton que habilita el contenido del codigo 
 
   let ejecutar = document.querySelector("#ejecutar");
-
+	//evento 
   ejecutar.addEventListener("click", () => {
     //Ejercicio 3
     let resultado = document.querySelector("#ejercicio");
     let resultadoAsync = document.querySelector("#ejercicioAsync");
-
+	//peticion al servidor
     fetch("https://api.ipbase.com/v1/json/")
       .then((resp) => resp.json())
       .then((data) => (resultado.innerHTML = JSON.stringify(data, null, 2)));
