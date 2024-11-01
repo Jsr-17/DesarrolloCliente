@@ -1,0 +1,67 @@
+.game-container {
+  max-width: 600px;
+  margin: auto;
+}
+
+.canvas-container {
+  background-color: #f8f9fa;
+  border: 1px solid #ced4da;
+  padding: 10px;
+}
+
+.word-display,
+.info-display {
+  font-size: 1.5rem;
+  font-weight: bold;
+  letter-spacing: 0.2em;
+  text-align: center;
+}
+
+.info-display {
+  color: #6c757d;
+}
+
+.bnt {
+  height: 2500px !important;
+}
+
+.dropdown-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+select {
+  width: 200px;
+  padding: 10px;
+  border: 2px solid #007bff;
+  border-radius: 5px;
+  font-size: 1rem;
+  background-color: #f1f1f1;
+  color: #333;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+select:hover {
+  border-color: #0056b3;
+}
+
+select:focus {
+  outline: none;
+  border-color: #0056b3;
+  background-color: #ffffff;
+}
+
+option {
+  padding: 10px;
+}

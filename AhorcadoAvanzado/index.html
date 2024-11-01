@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Juego del Ahorcado</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./style/styles.css" />
+  </head>
+  <body>
+    <div id="main">
+      <div
+        class="modal fade show"
+        id="gameModal"
+        tabindex="1"
+        aria-labelledby="gameModalLabel"
+        aria-hidden="false"
+        style="display: block"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="gameModalLabel">
+                Elige la dificultad del juego
+              </h5>
+            </div>
+            <div class="dropdown-container">
+              <label for="dificultad">Seleccionar Dificultad:</label>
+              <select id="dificultad">
+                  <option value="facil">Fácil</option>
+                  <option value="medio">Medio</option>
+                  <option value="dificil">Difícil</option>
+              </select>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+                id="iniciaJuego"
+              >
+                Enviar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="./js/app.js"></script>
+  </body>
+</html>
