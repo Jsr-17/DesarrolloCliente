@@ -187,6 +187,7 @@ class Ahorcado {
   }
   //metodo que acaba el juego para hacer un primer reseteo parcial y la creacion del boton para el reseteo e inicio
   finDelJuego() {
+    btnActivaPalabra.disabled = true;
     this.palabrasAdivinadas = [];
     this.palabrasFalladas = [];
     const btn = document.createElement("button");

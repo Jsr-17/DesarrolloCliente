@@ -1,0 +1,5 @@
+Ejercicio 1
+
+^([a-zA-Z0-9]+[@].[a-zA-Z].+[.]+(com|net|es))$
+
+Ejercicio 2
