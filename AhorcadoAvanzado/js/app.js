@@ -7,6 +7,7 @@ const generaNumAleatorio = (num) => {
 const main = document.querySelector("#main");
 const iniciaJuego = document.querySelector("#iniciaJuego");
 const dificultad = document.querySelector("#dificultad");
+let puntuacionTotal = 0;
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++Clase ahorcado++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -95,22 +96,28 @@ class Ahorcado {
   };
   // funcion encargada de comprobar cada una de las letras
   compruebaLetra(letra) {
+    const puntuacion = document.getElementById("puntuacion");
     //Si la letra es un espacio vacio o nada cancela todo
     if (letra == "" && letra == " ") {
       return;
     }
     //busca en el contenedor de la palabra la letra
     if (this.palabra.includes(letra)) {
+      if (!this.palabrasAdivinadas.includes(letra)) {
+        puntuacionTotal++;
+      }
       //en caso afirmativo mete la letra en el contenedor de palabras adivinadas , muestra la palabra al completo y produce el sonido de acierto
       this.palabrasAdivinadas.push(letra);
       this.muestraPalabras();
       this.sonidoAcierto.play();
       //En el caso de que la palabra sea exactamente igual que la palabra del contenedor html informa al usuario de la victoria y reproduce el sonido, ejecuta el metodo para finalizar \
       // el juego tambien
+
       if (this.palabra == contenedorPalabra.innerText) {
         contenedorIntentos.textContent = "Has ganado";
         this.finDelJuego();
         this.sonidoVictoria.play();
+        puntuacion.textContent = puntuacionTotal += 100;
       }
       //En el caso de que haya fallado
     } else {
@@ -120,6 +127,7 @@ class Ahorcado {
       if (this.palabrasFalladas.indexOf(letra) == -1) {
         this.palabrasFalladas.push(letra);
         this.intentos--;
+        puntuacionTotal--;
       }
       //Resetea la palabra , cambia la imagen
       this.muestraPalabras();
@@ -130,9 +138,12 @@ class Ahorcado {
         contenedorIntentos.textContent =
           "Has perdido la palabra era: " + this.palabra;
         this.finDelJuego();
+        puntuacion.textContent = puntuacionTotal -= 50;
+
         return;
       }
     }
+    puntuacion.textContent = puntuacionTotal;
   }
   //Funcion encargada de escribir las letras que se van pasando
   escribeLetra() {
@@ -253,6 +264,7 @@ iniciaJuego.addEventListener("click", () => {
   main.innerHTML = `
     <div class="container game-container my-5">
 <h2 class="text-center mb-4">Juego del Ahorcado Avanzado</h2>
+<h4>Puntuación total <span id=puntuacion></span></h4>
 
 <div class="canvas-container mb-4">
   <canvas id="ahorcadoCanvas" width="400" height="300"></canvas>
