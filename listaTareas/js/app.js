@@ -9,10 +9,11 @@ const localStorage = window.localStorage;
 
 //funcion que se encarga de recopilar la informacion e informar al usuario de posibles repeticiones de tarea no permitiedas
 const obtenerDato = () => {
-  error.textContent = "";
   //no permite el uso ni de espacios en blancos ni vacios
   const frase = tarea.value.trim();
+
   if (frase == "") {
+    mensajeError("No puedes anadir una tarea vacia");
     return;
   }
   //Si no existe esa tarea la implementa
@@ -20,14 +21,13 @@ const obtenerDato = () => {
     tarea.value = "";
     localStorage.setItem(frase, frase);
     //Quita el posible mensaje de error que hubiese
-    error.classList.remove("error");
   } else {
     //añade el mensaje de error
-    error.textContent = "Ese valor ya existe ";
-    error.classList.add("error");
+    mensajeError("Ese valor ya existe ");
   }
   //resetea el html
   muestraDatos();
+  tarea.value = "";
 };
 ///funcion que va a mostrar los datos y resetear el html
 const muestraDatos = () => {
@@ -77,3 +77,12 @@ document.addEventListener("keydown", (e) => {
     }
   }
 });
+
+const mensajeError = (texto) => {
+  error.textContent = texto;
+  error.classList.add("error");
+  setTimeout(() => {
+    error.classList.remove("error");
+    error.textContent = "";
+  }, 2000);
+};
